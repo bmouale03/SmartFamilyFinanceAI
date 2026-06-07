@@ -1,0 +1,9 @@
+from datetime import timedelta
+
+SECRET_KEY = (
+    "SMARTFAMILY_2026_SECRET_KEY"
+)
+
+ALGORITHM = "HS256"
+
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
