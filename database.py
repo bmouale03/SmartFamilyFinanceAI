@@ -5,7 +5,8 @@ import os
 
 try:
     import streamlit as st
-    print("SECRETS DISPONIBLES =", list(st.secrets.keys()))
+    print("SECRETS KEYS =", list(st.secrets.keys()))
+    print("DATABASE_URL SECRET EXISTS =", "DATABASE_URL" in st.secrets)
 
     if "DATABASE_URL" in st.secrets:
         DATABASE_URL = st.secrets["DATABASE_URL"]
