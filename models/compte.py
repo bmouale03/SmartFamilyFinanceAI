@@ -11,23 +11,16 @@ class Compte(Base):
         primary_key=True
     )
 
-    mois_budget = Column(
-        String(20),
-        nullable=True
-    )
-
     nom_compte = Column(
         String(100)
     )
 
     devise = Column(
-        String(20),
-        default="FCFA"
+        String(20)
     )
 
     solde = Column(
-        Numeric(15,2),
-        default=0
+        Numeric(15,2)
     )
 
     type_compte = Column(

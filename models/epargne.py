@@ -24,7 +24,7 @@ class Epargne(Base):
     date_operation = Column(Date)
 
     montant = Column(
-        Numeric(15,2)
+        Numeric(15, 2)
     )
 
     observation = Column(Text)

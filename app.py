@@ -192,3 +192,22 @@ st.write(
     • obtenir des prévisions financières basées sur l'IA.
     """
 )
+st.sidebar.page_link(
+    "pages/export_excel.py",
+    label="📤 Export Excel"
+)
+st.sidebar.page_link(
+    "pages/export_pdf.py",
+    label="📄 Export PDF"
+)
+
+st.set_page_config(
+    page_title="Smart Family Finance AI",
+    page_icon="assets/logo.png",
+    layout="wide"
+)
+
+st.page_link(
+    "pages/predictions.py",
+    label="🤖 Prévisions IA"
+)

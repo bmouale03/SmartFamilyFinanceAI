@@ -2,6 +2,7 @@ from sqlalchemy import *
 
 from database import Base
 
+
 class Objectif(Base):
 
     __tablename__ = "objectifs"
@@ -15,7 +16,9 @@ class Objectif(Base):
         String(150)
     )
 
-    description = Column(Text)
+    description = Column(
+        Text
+    )
 
     montant_cible = Column(
         Numeric(15,2)
@@ -25,4 +28,6 @@ class Objectif(Base):
         Numeric(15,2)
     )
 
-    date_limite = Column(Date)
+    date_limite = Column(
+        Date
+    )
