@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
 
   postgres:
@@ -20,6 +18,9 @@ services:
   streamlit:
     build: .
     container_name: smartfamily_app
+
+    environment:
+      DATABASE_URL: postgresql://admin:admin123@postgres:5432/smartfamily
 
     ports:
       - "8501:8501"
