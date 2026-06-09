@@ -3,9 +3,14 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 import streamlit as st
 
-DATABASE_URL = st.secrets["DATABASE_URL"]
+st.write("=== DEBUG SECRETS ===")
 
-print("DATABASE_URL =", DATABASE_URL)
+try:
+    st.write(st.secrets["DATABASE_URL"])
+except Exception as e:
+    st.error(f"SECRET INTROUVABLE : {e}")
+
+DATABASE_URL = st.secrets["DATABASE_URL"]
 
 engine = create_engine(
     DATABASE_URL,
