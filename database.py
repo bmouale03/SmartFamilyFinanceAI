@@ -1,17 +1,25 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
-import streamlit as st
-
-st.write("=== TEST SECRET ===")
+import os
 
 try:
-    DATABASE_URL = st.secrets["DATABASE_URL"]
-    st.write("SECRET TROUVÉ")
-    st.write(DATABASE_URL[:40] + "...")
-except Exception as e:
-    st.error(f"SECRET INTROUVABLE : {e}")
-    raise
+    import streamlit as st
+
+    if "DATABASE_URL" in st.secrets:
+        DATABASE_URL = st.secrets["DATABASE_URL"]
+    else:
+        DATABASE_URL = os.getenv("DATABASE_URL")
+
+except Exception:
+    DATABASE_URL = os.getenv("DATABASE_URL")
+
+if not DATABASE_URL:
+    DATABASE_URL = (
+        "postgresql://admin:admin123@postgres:5432/smartfamily"
+    )
+
+print("DATABASE_URL =", DATABASE_URL)
 
 engine = create_engine(
     DATABASE_URL,
