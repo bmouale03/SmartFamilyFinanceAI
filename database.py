@@ -2,26 +2,25 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
+import streamlit as st
 
 try:
-    import streamlit as st
-
     if "DATABASE_URL" in st.secrets:
         DATABASE_URL = st.secrets["DATABASE_URL"]
-        print("DATABASE_URL récupérée depuis Streamlit Secrets")
+        st.write("✅ DATABASE_URL trouvée dans les Secrets")
     else:
         DATABASE_URL = os.getenv("DATABASE_URL")
-        print("DATABASE_URL récupérée depuis les variables d'environnement")
+        st.write("⚠️ DATABASE_URL trouvée dans les variables d'environnement")
 
 except Exception as e:
-    print("Erreur Secrets :", e)
+    st.error(f"Erreur Secrets : {e}")
     DATABASE_URL = os.getenv("DATABASE_URL")
 
-print("DATABASE_URL =", DATABASE_URL)
+st.write("Secrets disponibles :", list(st.secrets.keys()))
 
 if not DATABASE_URL:
     raise Exception(
-        "DATABASE_URL introuvable. Vérifiez les Secrets Streamlit."
+        "DATABASE_URL non configurée"
     )
 
 engine = create_engine(
