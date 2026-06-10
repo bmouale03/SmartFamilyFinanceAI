@@ -3,7 +3,14 @@ from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker
 import os
 import streamlit as st
+st.write("Secrets disponibles :", list(st.secrets.keys()))
 
+try:
+    DATABASE_URL = st.secrets["DATABASE_URL"]
+    st.success("DATABASE_URL trouvée")
+except Exception as e:
+    st.error(f"Erreur Secrets : {e}")
+    raise
 try:
     if "DATABASE_URL" in st.secrets:
         DATABASE_URL = st.secrets["DATABASE_URL"]
