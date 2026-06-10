@@ -5,8 +5,6 @@ import os
 
 try:
     import streamlit as st
-    print("SECRETS KEYS =", list(st.secrets.keys()))
-    print("DATABASE_URL SECRET EXISTS =", "DATABASE_URL" in st.secrets)
 
     if "DATABASE_URL" in st.secrets:
         DATABASE_URL = st.secrets["DATABASE_URL"]
@@ -20,8 +18,6 @@ if not DATABASE_URL:
     DATABASE_URL = (
         "postgresql://admin:admin123@postgres:5432/smartfamily"
     )
-
-print("DATABASE_URL =", DATABASE_URL)
 
 engine = create_engine(
     DATABASE_URL,
