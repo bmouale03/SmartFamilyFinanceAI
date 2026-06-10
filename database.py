@@ -1,39 +1,25 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import sessionmaker
-import os
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import declarative_base, sessionmaker
 import streamlit as st
-st.write("Secrets disponibles :", list(st.secrets.keys()))
+
+DATABASE_URL = st.secrets["DATABASE_URL"]
+
+st.write("Secrets :", list(st.secrets.keys()))
 
 try:
-    DATABASE_URL = st.secrets["DATABASE_URL"]
-    st.success("DATABASE_URL trouvée")
-except Exception as e:
-    st.error(f"Erreur Secrets : {e}")
-    raise
-try:
-    if "DATABASE_URL" in st.secrets:
-        DATABASE_URL = st.secrets["DATABASE_URL"]
-        st.write("✅ DATABASE_URL trouvée dans les Secrets")
-    else:
-        DATABASE_URL = os.getenv("DATABASE_URL")
-        st.write("⚠️ DATABASE_URL trouvée dans les variables d'environnement")
-
-except Exception as e:
-    st.error(f"Erreur Secrets : {e}")
-    DATABASE_URL = os.getenv("DATABASE_URL")
-
-st.write("Secrets disponibles :", list(st.secrets.keys()))
-
-if not DATABASE_URL:
-    raise Exception(
-        "DATABASE_URL non configurée"
+    engine = create_engine(
+        DATABASE_URL,
+        pool_pre_ping=True
     )
 
-engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True
-)
+    with engine.connect() as conn:
+        conn.execute(text("SELECT 1"))
+
+    st.success("Connexion PostgreSQL OK")
+
+except Exception as e:
+    st.error(f"ERREUR POSTGRESQL : {repr(e)}")
+    st.stop()
 
 SessionLocal = sessionmaker(
     autocommit=False,
