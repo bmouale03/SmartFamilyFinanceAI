@@ -8,15 +8,20 @@ try:
 
     if "DATABASE_URL" in st.secrets:
         DATABASE_URL = st.secrets["DATABASE_URL"]
+        print("DATABASE_URL récupérée depuis Streamlit Secrets")
     else:
         DATABASE_URL = os.getenv("DATABASE_URL")
+        print("DATABASE_URL récupérée depuis les variables d'environnement")
 
-except Exception:
+except Exception as e:
+    print("Erreur Secrets :", e)
     DATABASE_URL = os.getenv("DATABASE_URL")
 
+print("DATABASE_URL =", DATABASE_URL)
+
 if not DATABASE_URL:
-    DATABASE_URL = (
-        "postgresql://admin:admin123@postgres:5432/smartfamily"
+    raise Exception(
+        "DATABASE_URL introuvable. Vérifiez les Secrets Streamlit."
     )
 
 engine = create_engine(
