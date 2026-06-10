@@ -29,7 +29,7 @@ st.set_page_config(
 )
 
 st.title(
-    "📄 Rapport Financier PDF"
+    "Rapport Financier PDF"
 )
 
 db = SessionLocal()

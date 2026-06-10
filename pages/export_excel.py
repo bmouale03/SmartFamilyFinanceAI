@@ -16,7 +16,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("📤 Export des Données")
+st.title("Export des Données")
 
 db = SessionLocal()
 

@@ -25,7 +25,7 @@ patrimoine = service.patrimoine()
 # Affichage
 # ==========================
 
-st.title("📊 Smart Family Finance AI")
+st.title("Smart Family Finance AI")
 
 # ==========================
 # BLOC 2 : Affichage KPI

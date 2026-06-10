@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🛒 Gestion des Dépenses")
+st.title("Gestion des Dépenses")
 
 db = SessionLocal()
 

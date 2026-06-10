@@ -1,9 +1,7 @@
-from sqlalchemy import Column
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import DateTime
-
+from sqlalchemy import *
 from database import Base
+from datetime import datetime
+
 
 class User(Base):
 
@@ -26,8 +24,8 @@ class User(Base):
 
     email = Column(
         String(150),
-        unique=True,
-        nullable=False
+        nullable=False,
+        unique=True
     )
 
     password_hash = Column(
@@ -37,9 +35,10 @@ class User(Base):
 
     role = Column(
         String(50),
-        default="USER"
+        default="Utilisateur"
     )
 
     created_at = Column(
-        DateTime
+        DateTime,
+        default=datetime.utcnow
     )

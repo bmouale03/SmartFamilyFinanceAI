@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🏦 Gestion de l'Épargne")
+st.title("Gestion de l'Épargne")
 
 db = SessionLocal()
 
@@ -256,7 +256,7 @@ if not df.empty:
     st.markdown("---")
 
     st.subheader(
-        "📊 Répartition de l'Épargne par Compte"
+        "Répartition de l'Épargne par Compte"
     )
 
     repartition = (

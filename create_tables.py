@@ -10,6 +10,7 @@ from models.epargne import Epargne
 from models.objectif import Objectif
 from models.devise import Devise
 from models.prediction import Prediction
+from models.utilisateur import *
 
 Base.metadata.create_all(bind=engine)
 

@@ -1,0 +1,7 @@
+Pour se connecter a PostgreSQL:
+	docker exec -it smartfamily_postgres psql -U admin -d smartfamily
+Voir la liste des table:\dt: 
+Créer une table: docker exec -it smartfamily_app python create_tables.py
+Redémarrage après modification du projet dockeriser:
+	docker compose down
+	docker compose up -d --build ou simplement docker restart smartfamily_app

@@ -18,7 +18,7 @@ st.set_page_config(
 # Titre
 # =====================================
 
-st.title("📥 Import Budget Familial")
+st.title("Import Budget Familial")
 
 st.markdown(
     """

@@ -44,3 +44,8 @@ openpyxl
 xlsxwriter
 plotly
 kaleido
+
+#Secruriser les MDP
+passlib[bcrypt]
+bcrypt
+PyJWT

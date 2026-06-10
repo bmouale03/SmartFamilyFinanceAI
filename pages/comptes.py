@@ -10,7 +10,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("🏦 Gestion des Comptes Bancaires")
+st.title("Gestion des Comptes Bancaires")
 
 db = SessionLocal()
 

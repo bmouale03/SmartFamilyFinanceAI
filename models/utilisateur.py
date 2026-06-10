@@ -1,40 +1,30 @@
 import streamlit as st
 import pandas as pd
+
 from datetime import datetime
-from passlib.hash import bcrypt
+
 from database import SessionLocal
 from models.user import User
-from security import hash_password
 
 db = SessionLocal()
 
 st.title("👥 Gestion des Utilisateurs")
 
-# =====================================================
+# ==========================
 # AJOUT D'UN UTILISATEUR
-# =====================================================
+# ==========================
 
 with st.expander("➕ Ajouter un utilisateur"):
 
-    nom = st.text_input(
-        "Nom",
-        key="add_nom"
-    )
+    nom = st.text_input("Nom")
 
-    prenom = st.text_input(
-        "Prénom",
-        key="add_prenom"
-    )
+    prenom = st.text_input("Prénom")
 
-    email = st.text_input(
-        "Email",
-        key="add_email"
-    )
+    email = st.text_input("Email")
 
     mot_de_passe = st.text_input(
         "Mot de passe",
-        type="password",
-        key="add_password"
+        type="password"
     )
 
     role = st.selectbox(
@@ -44,18 +34,16 @@ with st.expander("➕ Ajouter un utilisateur"):
             "Parent",
             "Enfant",
             "Utilisateur"
-        ],
-        key="add_role"
+        ]
     )
 
-    if st.button(
-        "Enregistrer l'utilisateur",
-        key="btn_add_user"
-    ):
+    if st.button("Enregistrer l'utilisateur"):
 
         existe = (
             db.query(User)
-            .filter(User.email == email)
+            .filter(
+                User.email == email
+            )
             .first()
         )
 
@@ -66,16 +54,18 @@ with st.expander("➕ Ajouter un utilisateur"):
             )
 
         else:
-            mot_de_passe_hash = hash_password(mot_de_passe)
+
             utilisateur = User(
                 nom=nom,
                 prenom=prenom,
                 email=email,
-                password_hash=mot_de_passe_hash,
+                password_hash=mot_de_passe,
                 role=role,
                 created_at=datetime.now()
             )
+
             db.add(utilisateur)
+
             db.commit()
 
             st.success(
@@ -84,15 +74,14 @@ with st.expander("➕ Ajouter un utilisateur"):
 
             st.rerun()
 
-# =====================================================
+# ==========================
 # LISTE DES UTILISATEURS
-# =====================================================
+# ==========================
 
 st.subheader("📋 Liste des utilisateurs")
 
 utilisateurs = (
     db.query(User)
-    .order_by(User.id)
     .all()
 )
 
@@ -126,9 +115,9 @@ else:
         "Aucun utilisateur enregistré."
     )
 
-# =====================================================
+# ==========================
 # MODIFICATION
-# =====================================================
+# ==========================
 
 st.subheader("✏️ Modifier un utilisateur")
 
@@ -136,8 +125,7 @@ if utilisateurs:
 
     utilisateur_id = st.selectbox(
         "Choisir un utilisateur",
-        [u.id for u in utilisateurs],
-        key="edit_user"
+        [u.id for u in utilisateurs]
     )
 
     utilisateur = (
@@ -166,7 +154,7 @@ if utilisateurs:
         key="edit_email"
     )
 
-    roles = [
+    liste_roles = [
         "Administrateur",
         "Parent",
         "Enfant",
@@ -174,22 +162,19 @@ if utilisateurs:
     ]
 
     index_role = (
-        roles.index(utilisateur.role)
-        if utilisateur.role in roles
+        liste_roles.index(utilisateur.role)
+        if utilisateur.role in liste_roles
         else 0
     )
 
     nouveau_role = st.selectbox(
         "Rôle",
-        roles,
+        liste_roles,
         index=index_role,
         key="edit_role"
     )
 
-    if st.button(
-        "Mettre à jour",
-        key="btn_update_user"
-    ):
+    if st.button("Mettre à jour"):
 
         utilisateur.nom = nouveau_nom
         utilisateur.prenom = nouveau_prenom
@@ -204,9 +189,9 @@ if utilisateurs:
 
         st.rerun()
 
-# =====================================================
+# ==========================
 # SUPPRESSION
-# =====================================================
+# ==========================
 
 st.subheader("🗑️ Supprimer un utilisateur")
 
@@ -215,13 +200,10 @@ if utilisateurs:
     id_suppr = st.selectbox(
         "Utilisateur à supprimer",
         [u.id for u in utilisateurs],
-        key="delete_user"
+        key="supprimer"
     )
 
-    if st.button(
-        "Supprimer l'utilisateur",
-        key="btn_delete_user"
-    ):
+    if st.button("Supprimer l'utilisateur"):
 
         utilisateur = (
             db.query(User)
@@ -231,21 +213,19 @@ if utilisateurs:
             .first()
         )
 
-        if utilisateur:
+        db.delete(utilisateur)
 
-            db.delete(utilisateur)
+        db.commit()
 
-            db.commit()
+        st.success(
+            "Utilisateur supprimé."
+        )
 
-            st.success(
-                "Utilisateur supprimé."
-            )
+        st.rerun()
 
-            st.rerun()
-
-# =====================================================
+# ==========================
 # STATISTIQUES
-# =====================================================
+# ==========================
 
 st.subheader("📊 Statistiques")
 
@@ -262,8 +242,7 @@ with col2:
 
     nb_admin = len(
         [
-            u
-            for u in utilisateurs
+            u for u in utilisateurs
             if u.role == "Administrateur"
         ]
     )
