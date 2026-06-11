@@ -1,25 +1,21 @@
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import declarative_base, sessionmaker
-import streamlit as st
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import sessionmaker
+import os
 
-DATABASE_URL = st.secrets["DATABASE_URL"]
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-st.write("Secrets :", list(st.secrets.keys()))
-
-try:
-    engine = create_engine(
-        DATABASE_URL,
-        pool_pre_ping=True
+if not DATABASE_URL:
+    DATABASE_URL = (
+        "postgresql://admin:admin123@postgres:5432/smartfamily"
     )
 
-    with engine.connect() as conn:
-        conn.execute(text("SELECT 1"))
+print("DATABASE_URL =", DATABASE_URL)
 
-    st.success("Connexion PostgreSQL OK")
-
-except Exception as e:
-    st.error(f"ERREUR POSTGRESQL : {repr(e)}")
-    st.stop()
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True
+)
 
 SessionLocal = sessionmaker(
     autocommit=False,
