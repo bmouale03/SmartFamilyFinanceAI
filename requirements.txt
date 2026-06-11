@@ -49,3 +49,4 @@ kaleido
 passlib[bcrypt]
 bcrypt
 PyJWT
+python-dotenv
