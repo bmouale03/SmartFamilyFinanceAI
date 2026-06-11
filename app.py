@@ -10,7 +10,7 @@ from models.revenu import Revenu
 from models.depense import Depense
 from models.epargne import Epargne
 from models.objectif import Objectif
-
+from models.patrimoine import Patrimoine
 # Création automatique des tables
 try:
     Base.metadata.create_all(bind=engine)
@@ -202,7 +202,11 @@ with col3:
     st.warning(
         "🤖 Prévisions IA"
     )
-
+    
+st.sidebar.page_link(
+    "pages/patrimoine.py",
+    label="🏠 Patrimoine"
+)
 st.markdown("---")
 
 st.subheader(
