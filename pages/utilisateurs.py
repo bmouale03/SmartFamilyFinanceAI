@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime
-from passlib.hash import bcrypt
+
 from database import SessionLocal
 from models.user import User
 from security import hash_password
@@ -53,36 +53,54 @@ with st.expander("➕ Ajouter un utilisateur"):
         key="btn_add_user"
     ):
 
-        existe = (
-            db.query(User)
-            .filter(User.email == email)
-            .first()
-        )
+        email = email.strip().lower()
 
-        if existe:
+        if not nom or not email or not mot_de_passe:
 
             st.error(
-                "Cet email existe déjà."
+                "Veuillez renseigner tous les champs obligatoires."
             )
 
         else:
-            mot_de_passe_hash = hash_password(mot_de_passe)
-            utilisateur = User(
-                nom=nom,
-                prenom=prenom,
-                email=email,
-                password_hash=mot_de_passe_hash,
-                role=role,
-                created_at=datetime.now()
-            )
-            db.add(utilisateur)
-            db.commit()
 
-            st.success(
-                "Utilisateur ajouté avec succès."
+            existe = (
+                db.query(User)
+                .filter(User.email == email)
+                .first()
             )
 
-            st.rerun()
+            if existe:
+
+                st.error(
+                    "Cet email existe déjà."
+                )
+
+            else:
+
+                mot_de_passe_hash = hash_password(
+                    mot_de_passe
+                )
+
+                utilisateur = User(
+                    nom=nom.strip(),
+                    prenom=prenom.strip(),
+                    email=email,
+                    password_hash=mot_de_passe_hash,
+                    role=role,
+                    created_at=datetime.now()
+                )
+
+                db.add(utilisateur)
+
+                db.commit()
+
+                db.refresh(utilisateur)
+
+                st.success(
+                    "Utilisateur ajouté avec succès."
+                )
+
+                st.rerun()
 
 # =====================================================
 # LISTE DES UTILISATEURS
@@ -142,9 +160,7 @@ if utilisateurs:
 
     utilisateur = (
         db.query(User)
-        .filter(
-            User.id == utilisateur_id
-        )
+        .filter(User.id == utilisateur_id)
         .first()
     )
 
@@ -191,9 +207,9 @@ if utilisateurs:
         key="btn_update_user"
     ):
 
-        utilisateur.nom = nouveau_nom
-        utilisateur.prenom = nouveau_prenom
-        utilisateur.email = nouveau_email
+        utilisateur.nom = nouveau_nom.strip()
+        utilisateur.prenom = nouveau_prenom.strip()
+        utilisateur.email = nouveau_email.strip().lower()
         utilisateur.role = nouveau_role
 
         db.commit()
@@ -225,9 +241,7 @@ if utilisateurs:
 
         utilisateur = (
             db.query(User)
-            .filter(
-                User.id == id_suppr
-            )
+            .filter(User.id == id_suppr)
             .first()
         )
 
@@ -272,3 +286,5 @@ with col2:
         "Administrateurs",
         nb_admin
     )
+
+db.close()

@@ -1,5 +1,4 @@
 import streamlit as st
-
 from database import SessionLocal
 from services.auth_service import AuthService
 
@@ -23,26 +22,41 @@ if st.button("Se connecter"):
 
     db = SessionLocal()
 
-    token = AuthService.authenticate_user(
-        db,
-        email,
-        password
-    )
+    try:
 
-    if token:
+        # Normalisation de l'email
+        email = email.strip().lower()
 
-        st.session_state["token"] = token
-
-        st.success(
-            "Connexion réussie..."
+        token = AuthService.authenticate_user(
+            db,
+            email,
+            password
         )
 
-        st.switch_page(
-            "app.py"
-        )
+        if token:
 
-    else:
+            st.session_state["token"] = token
+
+            st.success(
+                "Connexion réussie..."
+            )
+
+            st.switch_page(
+                "app.py"
+            )
+
+        else:
+
+            st.error(
+                "Email ou mot de passe incorrect."
+            )
+
+    except Exception as e:
 
         st.error(
-            "Email ou mot de passe incorrect"
+            f"Erreur de connexion : {str(e)}"
         )
+
+    finally:
+
+        db.close()
