@@ -1,52 +1,53 @@
-# Interface Web
 streamlit>=1.46.0
 
 # Data Science
+
 pandas>=2.2.0
 numpy>=1.26.0
 
-# Excel
-openpyxl>=3.1.2
-xlsxwriter>=3.2.0
-
 # Base de données
+
 sqlalchemy>=2.0.0
 psycopg2-binary>=2.9.10
 
 # Authentification
+
 python-jose[cryptography]>=3.3.0
-passlib==1.7.4
-bcrypt==4.1.3
+passlib[bcrypt]>=1.7.4
+bcrypt>=4.1.3
+PyJWT>=2.10.0
 
 # Configuration
+
 python-dotenv>=1.0.1
 
 # Visualisation
+
 plotly>=6.0.0
+kaleido>=0.2.1
 
 # IA / Machine Learning
+
 scikit-learn>=1.6.0
 xgboost>=3.0.0
 
 # Prévisions temporelles
+
 prophet>=1.1.6
 
+# Excel
+
+openpyxl>=3.1.2
+xlsxwriter>=3.2.0
+
 # Export PDF
+
 reportlab>=4.2.0
-reportlab
 
 # Dates
+
 python-dateutil>=2.9.0
 
 # Utilitaires
-requests>=2.32.0
-openpyxl
-xlsxwriter
-plotly
-kaleido
 
-#Secruriser les MDP
-passlib[bcrypt]
-bcrypt
-PyJWT
-python-dotenv
+requests>=2.32.0

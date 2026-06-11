@@ -1,6 +1,22 @@
+
 import streamlit as st
+
 from database import Base, engine
-Base.metadata.create_all(bind=engine)
+
+# Import des modèles
+from models.user import User
+from models.compte import Compte
+from models.revenu import Revenu
+from models.depense import Depense
+from models.epargne import Epargne
+from models.objectif import Objectif
+
+# Création automatique des tables
+try:
+    Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print("Erreur création tables :", e)
+
 # ==========================
 # Configuration générale
 # ==========================
@@ -17,10 +33,7 @@ st.set_page_config(
 # ==========================
 
 if "token" not in st.session_state:
-
-    st.switch_page(
-        "pages/login.py"
-    )
+    st.switch_page("pages/login.py")
 
 # ==========================
 # Décodage JWT
@@ -65,7 +78,7 @@ st.sidebar.write(
 st.sidebar.markdown("---")
 
 # ==========================
-# Navigation
+# Navigation principale
 # ==========================
 
 st.sidebar.page_link(
@@ -96,6 +109,21 @@ st.sidebar.page_link(
 st.sidebar.page_link(
     "pages/rapports.py",
     label="📄 Rapports"
+)
+
+st.sidebar.page_link(
+    "pages/predictions.py",
+    label="🤖 Prévisions IA"
+)
+
+st.sidebar.page_link(
+    "pages/export_excel.py",
+    label="📤 Export Excel"
+)
+
+st.sidebar.page_link(
+    "pages/export_pdf.py",
+    label="📄 Export PDF"
 )
 
 # ==========================
@@ -137,7 +165,7 @@ if st.sidebar.button(
     )
 
 # ==========================
-# Accueil
+# Page d'accueil
 # ==========================
 
 st.title(
@@ -185,30 +213,19 @@ st.write(
     """
     Smart Family Finance AI vous permet de :
 
-    • suivre vos revenus et dépenses ;
-    • gérer votre épargne familiale ;
-    • suivre vos objectifs financiers ;
-    • importer automatiquement votre budget Excel ;
-    • analyser votre patrimoine ;
-    • obtenir des prévisions financières basées sur l'IA.
+    • Suivre vos revenus et dépenses
+
+    • Gérer votre épargne familiale
+
+    • Suivre vos objectifs financiers
+
+    • Importer automatiquement vos budgets Excel
+
+    • Générer des rapports détaillés
+
+    • Obtenir des prévisions financières grâce à l'IA
+
+    • Exporter vos données en Excel et PDF
     """
 )
-st.sidebar.page_link(
-    "pages/export_excel.py",
-    label="📤 Export Excel"
-)
-st.sidebar.page_link(
-    "pages/export_pdf.py",
-    label="📄 Export PDF"
-)
 
-st.set_page_config(
-    page_title="Smart Family Finance AI",
-    page_icon="assets/logo.png",
-    layout="wide"
-)
-
-st.page_link(
-    "pages/predictions.py",
-    label="🤖 Prévisions IA"
-)
